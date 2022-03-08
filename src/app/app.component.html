@@ -2,14 +2,18 @@
   <div class="header">
     <div class="column">
       <img src="../assets/logo2.jpeg" class="header-logo" alt="">
-      <p class="underlogo">Kamjan - Tetove • Tel: +389(0)</p>
+      <div class="tel-number">
+        <p class="underlogo">Kamjan - Tetove</p>
+        <p class="underlogo">Tel: +389(0)70240162</p>
+        <p class="underlogo">Tel +389(0)72763071</p>
+      </div>
     </div>
     <div class="column">
       <h2>Zdrukthtaria Frasheri AN</h2>
       <div class="paragraphs">
       <p class="margin-0">E.D.B: 4035021504885</p>
       <p class="margin-0">ZS: 330301834160172</p>
-      <p class="margin-0">Tel: +38970999888</p>
+      <p class="margin-0">Tel: +38970240161</p>
       <p class="margin-0">frasheri.an@hotmail.com</p>
       </div>
       
@@ -39,8 +43,8 @@
           </option>
         </select>
       <h3 (click)="invoiceType = ''" *ngIf="invoiceType">{{invoiceType}}</h3>
-      <h6>Numri Serik: <p>12353412551</p></h6>
-      <h6>Data: 14.02.2022 13:34</h6>
+      <h6>Numri Serik: <p>{{serialNumber | date:'ddMMyyyyh' }}</p></h6>
+      <h6>Data: {{serialNumber | date}}</h6>
     </div>
   </div>
 </div>
@@ -53,13 +57,12 @@
 		<thead>
 			<th>Nr</th>
 			<th>Pershkrimi</th>
-			<th>Njesia Matese</th>
-      <th>Sasia</th>
-      <th>Cmimi</th>
-      <th>Perqindja</th>
+			<th class="width-12">Njesia Matese</th>
+      <th class="width-12">Sasia</th>
+      <th class="width-12">Cmimi</th>
+      <th class="width-12">Perqindja</th>
       <th>DDV</th>
-      <th>Cmimi i %</th>
-      <th>Totali</th>
+      <th class="width-12">Pagesa</th>
 		</thead>
 		<tbody formArrayName="Rows">
 			<tr *ngFor="let itemrow of invoiceForm.controls.Rows.controls; let i=index;let l=last"
@@ -75,26 +78,23 @@
           <input formControlName="quantity" class="form-control" (keyup)="getQuantity($event)">
         </td>
         <td>
-          <input formControlName="price" class="form-control" (keyup)="getPrice($event)">
+          <input formControlName="price" class="form-control" (keyp)="getPrice($event,i)" >
         </td>
         <td>
           18%
         </td>
         <td>
-          {{ddv.toFixed(2) | number}}
+          {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
         </td>
         <td>
-
-        </td>
-        <td>
-          <!-- <p *ngIf="total">{{total.toFixed(2) | number}}</p> -->
-          <p *ngIf="totalPayment">{{totalPayment.toFixed(2) | number}}</p>
+          {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
         </td>
 			</tr>
 		</tbody>
 	</table>
-<button type="button" (click)="addNewRow()" class="btn btn-primary">+</button>
-<!-- <button *ngIf="invoiceForm.controls.Rows.controls.length > 1" (click)="deleteRow(i)" class="btn btn-danger">Delete</button> -->
+  <div class="button-div">
+    <button type="button" (click)="addNewRow()" class="btn btn-secondary">+</button>
+  </div>
 </form>
 
 <div class="total-div">
@@ -105,7 +105,7 @@
         Pagesa
       </th>
       <td>
-        {{total.toFixed(2) | number}}
+        {{testtotal | number : '1.2-2'}}
       </td>
     </tr>
     <tr>
@@ -147,6 +147,4 @@
     </div>
   </div>
 </div>
-
-{{invoiceForm.value | json}}
 

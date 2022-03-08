@@ -24,6 +24,20 @@ export class AppComponent implements OnInit {
   totalPayment: number = 0;
   ddv: number = 0;
   invoiceType = '';
+  serialNumber = new Date();
+
+
+  testtotal = 0
+  baba(){
+    this.invoiceForm.value.Rows.forEach((row:any) => {
+      console.log(row.price);
+      // this.testtotal += parseFloat(row.price)
+      let sum = (row.price * row.quantity).toFixed(2)
+      this.testtotal += parseFloat(sum)
+    });
+
+
+  }
 
 
   onSubmit(form: NgForm){
@@ -45,6 +59,8 @@ export class AppComponent implements OnInit {
       measuringUnit: '',
       quantity: '',
       price: '',
+      ddv:'',
+      // total:''
     });
   }
 
@@ -58,13 +74,14 @@ export class AppComponent implements OnInit {
 
   getQuantity(event: any){
     this.quantity = event.target.value;
+    console.log(event);    
   }
   
-  getPrice(event: any){
+  getPrice(event: any,i:any){
     this.price = event.target.value
     this.calculateTotal()
     this.totalPaymentc()
-    console.log(this.invoiceForm);
+    this.total = this.invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity;
     
   }
 
@@ -78,5 +95,6 @@ totalPaymentc(){
   this.ddv = parseFloat(ddv)
   this.totalPayment = this.total + this.ddv
 }
+
   
 }
