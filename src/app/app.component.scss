@@ -80,3 +80,27 @@ form{
     display: flex;
     justify-content: space-between;
 }
+
+.button-div{
+    display: flex;
+    justify-content: right;
+    button{
+        margin-right: 10px;
+    }
+}
+
+.width-12{
+    width: 12%;
+}
+
+td, th{
+    padding-left: 5px;
+}
+
+table{
+    margin: 0 10px;
+}
+
+.tel-number{
+    text-align: center;
+}
