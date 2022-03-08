@@ -1,0 +1,82 @@
+.header-logo{
+    width: 240px;
+    height: 160px;
+}
+
+.underlogo{
+    margin: 0px 0px 0px 20px;
+    font-size: 14px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 20px;
+    align-items: center;
+}
+
+.myHr{
+    height: 2px;
+    color: black;
+    background: black;
+}
+
+.margin-0{
+    margin: 0;
+}
+
+.paragraphs{
+    text-align: end;
+}
+
+.place-input{
+    border: none;
+    border-bottom: 1px solid;
+}
+
+.d-flex{
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 30%;
+}
+
+.place-input:focus{
+    border: none;
+    border-bottom: 1px solid;
+    outline: none;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+.mid{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-control:focus{
+    border: none;
+}
+
+.form-control{
+    border: none;
+}
+
+
+.total-div{
+    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.footer{
+    display: flex;
+    justify-content: space-between;
+}
