@@ -1,7 +1,8 @@
+<div id="print-section">
 <div class="container-fluid">
   <div class="header">
     <div class="column">
-      <img src="../assets/logo2.jpeg" class="header-logo" alt="">
+      <img src="assets/logo2.jpeg" class="header-logo" alt="">
       <div class="tel-number">
         <p class="underlogo">Kamjan - Tetove</p>
         <p class="underlogo">Tel: +389(0)70240162</p>
@@ -27,7 +28,7 @@
   <div class="mid">
     <div class="column d-flex">
       <form class="form" (ngSubmit)="onSubmit(form)" #form="ngForm">
-      <label for="deri">Deri: </label>
+      <label for="deri">Deri / До : </label>
       <input *ngIf="!place" type="text" name="target" class="place-input" id="deri" ngModel>
     </form>
       <h5 (click)="place = '' ">{{place}}</h5>
@@ -35,16 +36,16 @@
     <div class="column">
       <select *ngIf="!invoiceType" #selecet (change)="selectedInvoice(selecet.value)">
         <option>Select</option>
-          <option value="Fakture">
-            Fakture
+          <option value="Fakture / Фактура">
+            Fakture / Фактура
           </option>
-          <option value="Profakture">
-            Profakture
+          <option value="Profakture / Профактура">
+            Profakture / Профактура
           </option>
         </select>
       <h3 (click)="invoiceType = ''" *ngIf="invoiceType">{{invoiceType}}</h3>
-      <h6>Numri Serik: <p>{{serialNumber | date:'ddMMyyyyh' }}</p></h6>
-      <h6>Data: {{serialNumber | date}}</h6>
+      <h6 class="serial">Numri Serik / Сериски Број : <p>{{serialNumber | date:'ddMMyyyyh' }}</p></h6>
+      <h6 class="serial">Data / Датум : {{serialNumber | date}}</h6>
     </div>
   </div>
 </div>
@@ -56,13 +57,13 @@
 	<table border=1>
 		<thead>
 			<th>Nr</th>
-			<th>Pershkrimi</th>
-			<th class="width-12">Njesia Matese</th>
-      <th class="width-12">Sasia</th>
-      <th class="width-12">Cmimi</th>
-      <th class="width-12">Perqindja</th>
-      <th>DDV</th>
-      <th class="width-12">Pagesa</th>
+			<th class="width-30">Pershkrimi / Опис</th>
+			<th>Njs.Mt. / Ед.Мер</th>
+      <th>Sasia / Колич.</th>
+      <th>Cmimi / Цена</th>
+      <th>%</th>
+      <!-- <th>DDV</th> -->
+      <th class="width-16">Pagesa / Платење</th>
 		</thead>
 		<tbody formArrayName="Rows">
 			<tr *ngFor="let itemrow of invoiceForm.controls.Rows.controls; let i=index;let l=last"
@@ -83,9 +84,9 @@
         <td>
           18%
         </td>
-        <td>
+        <!-- <td>
           {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
-        </td>
+        </td> -->
         <td>
           {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
         </td>
@@ -102,34 +103,30 @@
     <thead>
       <tr>
       <th>
-        Pagesa
+        Pagesa / За Платење
       </th>
       <td>
-        {{testtotal | number : '1.2-2'}}
+        {{total | number : '1.2-2'}}
       </td>
     </tr>
     <tr>
       <th>
-        DDV
+        DDV / ДДВ
       </th>
       <td>
-        {{ddv.toFixed(2) | number}}
+        {{ddv | number : '1.2-2'}}
       </td>
     </tr>
       <tr>
         <th>
-          Totali
+          Totali / Износ
         </th>
         <td>
-          {{totalPayment.toFixed(2) | number}}
+          {{totalPayment | number : '1.2-2'}}
         </td>
       </tr>
-     
+    <button type="button" class="btn btn-secondary" (click)="payment()">Kalkulo</button>
     </thead>
-    <tr>
-      
-     
-    </tr>
   </table>
 </div>
 <br><br>
@@ -137,14 +134,21 @@
 <div class="container-fluid">
   <div class="footer">
     <div class="column">
-      <p style="border-bottom:1px solid ; padding: 30px;">Fakturoi</p>
+      <p style="border-bottom:1px solid ; padding: 30px;">Fakturoi / Фактурирал</p>
     </div>
     <div class="column">
-      <p style="border-bottom:1px solid ; padding: 30px;">Pranoi</p>
+      <p style="border-bottom:1px solid ; padding: 30px;">Pranoi / Примил</p>
     </div>
     <div class="column">
-      <p style="border-bottom:1px solid ; padding: 30px;">Drejtori</p>
+      <p style="border-bottom:1px solid ; padding: 30px;">Drejtori / Директор</p>
     </div>
   </div>
 </div>
 
+  <br>
+  <hr class="no-margin">
+  <hr class="no-margin">
+</div>
+
+
+<button printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>

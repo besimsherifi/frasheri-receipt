@@ -17,27 +17,17 @@ export class AppComponent implements OnInit {
   }
 
   invoiceForm: any;
-  place = '';
+  place: string = '';
   quantity: number = 0;
   price: number = 0;
   total: number = 0;
   totalPayment: number = 0;
   ddv: number = 0;
-  invoiceType = '';
+  invoiceType :string = '';
   serialNumber = new Date();
 
 
-  testtotal = 0
-  baba(){
-    this.invoiceForm.value.Rows.forEach((row:any) => {
-      console.log(row.price);
-      // this.testtotal += parseFloat(row.price)
-      let sum = (row.price * row.quantity).toFixed(2)
-      this.testtotal += parseFloat(sum)
-    });
-
-
-  }
+ 
 
 
   onSubmit(form: NgForm){
@@ -60,7 +50,6 @@ export class AppComponent implements OnInit {
       quantity: '',
       price: '',
       ddv:'',
-      // total:''
     });
   }
 
@@ -68,33 +57,30 @@ export class AppComponent implements OnInit {
     this.formArr.push(this.initRows());
   }
 
-  deleteRow(index: number){
-    this.formArr.removeAt(index);
-  }
 
   getQuantity(event: any){
-    this.quantity = event.target.value;
-    console.log(event);    
+    this.quantity = event.target.value;  
   }
   
   getPrice(event: any,i:any){
     this.price = event.target.value
-    this.calculateTotal()
-    this.totalPaymentc()
     this.total = this.invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity;
-    
+  }
+
+
+  payment(){
+    this.invoiceForm.value.Rows.forEach((row:any) => {
+      let sum = (row.price * row.quantity).toFixed(2)
+      this.total += parseFloat(sum)
+    });
+    this.calculateTotal();
   }
 
   calculateTotal(){
-    this.total = this.quantity * this.price;
+    const ddv = (((18/ 100) * this.total)).toFixed(2);             // kalkulimi i ddv
+    this.ddv = parseFloat(ddv)
+    this.totalPayment = this.total + this.ddv
   }
-
-
-totalPaymentc(){
-  const ddv = (((18/ 100) * this.total)).toFixed(2);             // kalkulimi i ddv
-  this.ddv = parseFloat(ddv)
-  this.totalPayment = this.total + this.ddv
-}
 
   
 }
