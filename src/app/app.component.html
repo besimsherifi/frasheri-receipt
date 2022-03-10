@@ -94,7 +94,7 @@
 		</tbody>
 	</table>
   <div class="button-div">
-    <button type="button" (click)="addNewRow()" class="btn btn-secondary">+</button>
+    <button *ngIf="onPrintHide" type="button" (click)="addNewRow()" class="btn btn-secondary">+</button>
   </div>
 </form>
 
@@ -125,7 +125,7 @@
           {{totalPayment | number : '1.2-2'}}
         </td>
       </tr>
-    <button type="button" class="btn btn-secondary" (click)="payment()">Kalkulo</button>
+    <button *ngIf="onPrintHide" type="button" class="btn btn-secondary" (click)="payment()">Kalkulo</button>
     </thead>
   </table>
 </div>
@@ -151,4 +151,4 @@
 </div>
 
 
-<button printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>
+<button style="margin-left: 50%;" printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>

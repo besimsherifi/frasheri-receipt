@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   ddv: number = 0;
   invoiceType :string = '';
   serialNumber = new Date();
+  onPrintHide = true
 
 
  
@@ -80,6 +81,9 @@ export class AppComponent implements OnInit {
     const ddv = (((18/ 100) * this.total)).toFixed(2);             // kalkulimi i ddv
     this.ddv = parseFloat(ddv)
     this.totalPayment = this.total + this.ddv
+    if(this.totalPayment){
+      this.onPrintHide = false;
+    }
   }
 
   
