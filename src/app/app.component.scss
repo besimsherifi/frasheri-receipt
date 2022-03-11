@@ -80,7 +80,7 @@ form{
 .footer{
     display: flex;
     justify-content: space-between;
-
+    margin-bottom: 50px;
 }
 
 .button-div{
@@ -117,4 +117,8 @@ table{
 
 .no-margin{
     margin-top: 0;
+}
+
+.top-border{
+    border-top: solid 1px !important;
 }

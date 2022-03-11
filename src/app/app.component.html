@@ -59,11 +59,12 @@
 			<th>Nr</th>
 			<th class="width-30">Pershkrimi / Опис</th>
 			<th>Njs.Mt. / Ед.Мер</th>
-      <th>Sasia / Колич.</th>
+      <th>Sasia / Количина</th>
       <th>Cmimi / Цена</th>
-      <th>%</th>
+      <th>18%</th>
       <!-- <th>DDV</th> -->
-      <th class="width-16">Pagesa / Платење</th>
+      <th class="width-16">Cmimi pa TVSH / Цена без ДДВ</th>
+      <th>Cmimi me TVSH / Цена со ДДВ</th>
 		</thead>
 		<tbody formArrayName="Rows">
 			<tr *ngFor="let itemrow of invoiceForm.controls.Rows.controls; let i=index;let l=last"
@@ -82,13 +83,17 @@
           <input formControlName="price" class="form-control" (keyp)="getPrice($event,i)" >
         </td>
         <td>
-          18%
+          {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
         </td>
         <!-- <td>
           {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
         </td> -->
         <td>
           {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
+        </td>
+        <td>
+          {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity  + 18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}} 
+
         </td>
 			</tr>
 		</tbody>
@@ -103,7 +108,7 @@
     <thead>
       <tr>
       <th>
-        Pagesa / За Платење
+        Totali / Вкупно
       </th>
       <td>
         {{total | number : '1.2-2'}}
@@ -111,15 +116,15 @@
     </tr>
     <tr>
       <th>
-        DDV / ДДВ
+        TVSH / ДДВ : 18%
       </th>
       <td>
-        {{ddv | number : '1.2-2'}}
+        {{ddv | number : '1.2-2'}} +
       </td>
     </tr>
-      <tr>
+      <tr class="top-border">
         <th>
-          Totali / Износ
+          Pagesa / За наплата
         </th>
         <td>
           {{totalPayment | number : '1.2-2'}}
