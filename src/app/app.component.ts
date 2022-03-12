@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NgForm, FormArray, FormBuilder } from '@angular/forms';
 
@@ -8,7 +9,7 @@ import { FormGroup, NgForm, FormArray, FormBuilder } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.invoiceForm = this._fb.group({
@@ -84,6 +85,14 @@ export class AppComponent implements OnInit {
     if(this.totalPayment){
       this.onPrintHide = false;
     }
+  }
+
+  getInovoices(){
+    this.http.get('http://localhost:3000/faktura').subscribe((res:any)=>{
+      console.log(res);
+      this.place = res[0].adresa
+      
+    })
   }
 
   

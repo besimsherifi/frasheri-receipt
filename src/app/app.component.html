@@ -157,3 +157,7 @@
 
 
 <button style="margin-left: 50%;" printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>
+
+{{invoiceForm.value | json}}
+
+<button (click)="getInovoices()">get Invoices</button>
