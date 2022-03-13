@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, NgForm, FormArray, FormBuilder } from '@angular/forms';
-import { HttpServiceService } from './services/http-service.service';
+import { FormArray, FormBuilder, NgForm } from '@angular/forms';
+import { HttpServiceService } from 'src/app/services/http-service.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-create',
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss']
 })
-export class AppComponent implements OnInit {
+export class CreateComponent implements OnInit {
 
   constructor(private _fb: FormBuilder, private httpService: HttpServiceService) {}
 
@@ -96,5 +96,4 @@ export class AppComponent implements OnInit {
   }
  
 
-  
 }

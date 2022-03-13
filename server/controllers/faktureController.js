@@ -7,13 +7,14 @@ var { Fakture } = require('../models/faktureModel');
 router.get('/', (req, res) => {
     Fakture.find((err, docs) => {
         if (!err) { res.send(docs); }
-        else { console.log('Error in Retriving Employees :' + JSON.stringify(err, undefined, 2)); }
+        else { console.log('Error in Retriving Data :' + JSON.stringify(err, undefined, 2)); }
     });
 });
 
 
 router.post('/', (req,res) => {
     var faktur = new Fakture({
+        counter: req.body.counter,
         addres: req.body.addres,
         serialNr: req.body.serialNr,
         date: req.body.date,
@@ -25,7 +26,7 @@ router.post('/', (req,res) => {
     });
     faktur.save((err, doc) => {
         if(!err){res.send(doc);}
-        else { console.log('Error in Employee Save :' + JSON.stringify(err, undefined, 2)); }
+        else { console.log('Error in Data Save :' + JSON.stringify(err, undefined, 2)); }
 
     })
 

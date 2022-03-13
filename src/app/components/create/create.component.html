@@ -1,0 +1,163 @@
+<div id="print-section">
+    <div class="container-fluid">
+      <div class="header">
+        <div class="column">
+          <img src="assets/logo2.jpeg" class="header-logo" alt="">
+          <div class="tel-number">
+            <p class="underlogo">Kamjan - Tetove</p>
+            <p class="underlogo">Tel: +389(0)70240162</p>
+            <p class="underlogo">Tel +389(0)72763071</p>
+          </div>
+        </div>
+        <div class="column">
+          <h2>Zdrukthtaria Frasheri AN</h2>
+          <div class="paragraphs">
+          <p class="margin-0">E.D.B: 4035021504885</p>
+          <p class="margin-0">ZS: 330301834160172</p>
+          <p class="margin-0">Tel: +38970240161</p>
+          <p class="margin-0">frasheri.an@hotmail.com</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <hr class="myHr">
+    
+    <div class="container-fluid">
+      <div class="mid">
+        <div class="column d-flex">
+          <form class="form" (ngSubmit)="onSubmit(form)" #form="ngForm">
+          <label for="deri">Deri / До : </label>
+          <input *ngIf="!place" type="text" name="target" class="place-input" id="deri" ngModel>
+        </form>
+          <h5 (click)="place = '' ">{{place}}</h5>
+        </div>
+        <div class="column">
+          <select *ngIf="!invoiceType" #selecet (change)="selectedInvoice(selecet.value)">
+            <option>Select</option>
+              <option value="Fakture / Фактура">
+                Fakture / Фактура
+              </option>
+              <option value="Profakture / Профактура">
+                Profakture / Профактура
+              </option>
+            </select>
+          <h3 (click)="invoiceType = ''" *ngIf="invoiceType">{{invoiceType}}</h3>
+          <h6 *ngIf="invoiceCounter != 0" class="serial">Numri Serik / Сериски Број : <p>#INV-{{serialNumber | date:'ddMMyyyy' + invoiceCounter }}</p></h6>
+          <h6 class="serial">Data / Датум : {{serialNumber | date}}</h6>
+        </div>
+      </div>
+    </div>
+    
+    <br><br>
+    
+    
+    <form [formGroup]="invoiceForm" >
+        <table border=1>
+            <thead>
+                <th>Nr</th>
+                <th class="width-30">Pershkrimi / Опис</th>
+                <th>Njs.Mt. / Ед.Мер</th>
+          <th>Sasia / Количина</th>
+          <th>Cmimi / Цена</th>
+          <th>18%</th>
+          <!-- <th>DDV</th> -->
+          <th class="width-16">Cmimi pa TVSH / Цена без ДДВ</th>
+          <th>Cmimi me TVSH / Цена со ДДВ</th>
+            </thead>
+            <tbody formArrayName="Rows">
+                <tr *ngFor="let itemrow of invoiceForm.controls.Rows.controls; let i=index;let l=last"
+                    [formGroupName]="i">
+                    <td>{{i+1}}</td>
+                    <td>
+                        <input formControlName="description" class="form-control">
+            </td>
+                    <td>
+              <input formControlName="measuringUnit" class="form-control">
+                    </td>
+            <td>
+              <input formControlName="quantity" class="form-control" (keyup)="getQuantity($event)">
+            </td>
+            <td>
+              <input formControlName="price" class="form-control" (keyp)="getPrice($event,i)" >
+            </td>
+            <td>
+              {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
+            </td>
+            <!-- <td>
+              {{18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
+            </td> -->
+            <td>
+              {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}}
+            </td>
+            <td>
+              {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity  + 18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}} 
+    
+            </td>
+                </tr>
+            </tbody>
+        </table>
+      <div class="button-div">
+        <button *ngIf="onPrintHide" type="button" (click)="addNewRow()" class="btn btn-secondary">+</button>
+      </div>
+    </form>
+    
+    <div class="total-div">
+      <table>
+        <thead>
+          <tr>
+          <th>
+            Totali / Вкупно
+          </th>
+          <td>
+            {{total | number : '1.2-2'}}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            TVSH / ДДВ : 18%
+          </th>
+          <td>
+            {{ddv | number : '1.2-2'}} +
+          </td>
+        </tr>
+          <tr class="top-border">
+            <th>
+              Pagesa / За наплата
+            </th>
+            <td>
+              {{totalPayment | number : '1.2-2'}}
+            </td>
+          </tr>
+        <button *ngIf="onPrintHide" type="button" class="btn btn-secondary" (click)="payment()">Kalkulo</button>
+        </thead>
+      </table>
+    </div>
+    <br><br>
+    
+    <div class="container-fluid">
+      <div class="footer">
+        <div class="column">
+          <p style="border-bottom:1px solid ; padding: 30px;">Fakturoi / Фактурирал</p>
+        </div>
+        <div class="column">
+          <p style="border-bottom:1px solid ; padding: 30px;">Pranoi / Примил</p>
+        </div>
+        <div class="column">
+          <p style="border-bottom:1px solid ; padding: 30px;">Drejtori / Директор</p>
+        </div>
+      </div>
+    </div>
+    
+      <br>
+      <hr class="no-margin">
+      <hr class="no-margin">
+    </div>
+    
+    
+    <button style="margin-left: 50%;" printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>
+    
+    {{invoiceForm.value | json}}
+    
+    

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 var FaktureSchema = new mongoose.Schema({
+    counter: {type: Number},
     addres: {type: String},
     serialNr: {type: String},
     date: {type: String},
