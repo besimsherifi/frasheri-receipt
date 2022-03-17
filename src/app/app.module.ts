@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
+import { FilterPipe } from './shared/filter.pipe';
 
 
 
@@ -22,7 +23,8 @@ import { MatInputModule } from '@angular/material/input';
     AppComponent,
     CreateComponent,
     InvoicesComponent,
-    HomeComponent
+    HomeComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

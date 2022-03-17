@@ -34,7 +34,7 @@
           <h5 (click)="place = '' ">{{place}}</h5>
         </div>
         <div class="column">
-          <select *ngIf="!invoiceType" #selecet (change)="selectedInvoice(selecet.value)">
+          <select *ngIf="!invoiceType" #selecet (change)="typeOfInvoice(selecet.value)">
             <option>Select</option>
               <option value="Fakture / Фактура">
                 Fakture / Фактура
@@ -44,8 +44,9 @@
               </option>
             </select>
           <h3 (click)="invoiceType = ''" *ngIf="invoiceType">{{invoiceType}}</h3>
-          <h6 *ngIf="invoiceCounter != 0" class="serial">Numri Serik / Сериски Број : <p>#INV-{{serialNumber | date:'ddMMyyyy' + invoiceCounter }}</p></h6>
-          <h6 class="serial">Data / Датум : {{serialNumber | date}}</h6>
+          <h6 *ngIf="invoiceCounter != 0 && !selectedInvoice " class="serial">Numri Serik / Сериски Број : <p>#INV-{{serialNumber + invoiceCounter }}</p></h6>
+          <h6 *ngIf="selectedInvoice" class="serial">Numri Serik / Сериски Број : <p>{{serialNr}}</h6>
+          <h6 class="serial">Data / Датум : {{selectedInvoice ? date  : todaysDate}}</h6>
         </div>
       </div>
     </div>
@@ -93,7 +94,6 @@
             </td>
             <td>
               {{invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity  + 18 / 100 * invoiceForm.value.Rows[i].price * this.invoiceForm.value.Rows[i].quantity | number : '1.2-2'}} 
-    
             </td>
                 </tr>
             </tbody>
@@ -156,8 +156,6 @@
     </div>
     
     
-    <button style="margin-left: 50%;" printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>
-    
-    {{invoiceForm.value | json}}
+    <button (click)="onPrint()" [disabled]="!place || !invoiceType || !totalPayment" style="margin-left: 50%;" printSectionId="print-section" ngxPrint [useExistingCss]="true" styleSheetFile="app.component.scss" >Print</button>
     
     

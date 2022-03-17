@@ -8,7 +8,9 @@ import { InvoicesComponent } from './components/invoices/invoices.component';
 const routes: Routes = [
   { path:'', component: HomeComponent },
   { path:'create', component: CreateComponent },
-  { path:'invoices', component: InvoicesComponent }
+  { path: 'create/:id', component: CreateComponent },
+  { path:'invoices', component: InvoicesComponent },
+  { path:'**', component: HomeComponent }
 ];
 
 @NgModule({

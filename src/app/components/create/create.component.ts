@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, NgForm } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import * as moment from 'moment';
 import { HttpServiceService } from 'src/app/services/http-service.service';
+import { Invoice } from 'src/app/shared/invoice-model';
 
 @Component({
   selector: 'app-create',
@@ -9,18 +12,40 @@ import { HttpServiceService } from 'src/app/services/http-service.service';
 })
 export class CreateComponent implements OnInit {
 
-  constructor(private _fb: FormBuilder, private httpService: HttpServiceService) {}
+  constructor(  
+    private _fb: FormBuilder, 
+    private httpService: HttpServiceService, 
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {}
+
+    selectedInvoice = '';
+    serialNr = '';
+    date:Date = new Date();
+
+
 
   ngOnInit(): void {
     this.invoiceForm = this._fb.group({
       Rows: this._fb.array([this.initRows()])
     });
     this.httpService.getInovoices().subscribe((res:any) =>{
-      console.log(res.length, "lengthi");
         this.invoiceCounter = res.length + 1;
-    console.log(this.invoiceCounter);
-
     })
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.selectedInvoice = params['id'];
+    })
+    if(this.selectedInvoice){
+    this.httpService.getInvoiceById(this.selectedInvoice).subscribe((res:any) => {      
+      for (let i = 0; i < res.products.length; i++) {
+        this.formArr.push(this.populateRows(res.products[i]));
+      }
+      this.place = res.addres;
+      this.invoiceType = res.invoiceType;
+      this.serialNr = res.serialNr;
+      this.date = res.date
+    })    
+  }
+   
     
   }
 
@@ -33,9 +58,12 @@ export class CreateComponent implements OnInit {
   ddv: number = 0;
   invoiceType :string = '';
   invoiceCounter = 1;
-  serialNumber = new Date();
-  onPrintHide = true
+  serialNumber = moment().format("DDMMYYYY");
+  todaysDate = moment().format("ll");
+  onPrintHide = true;
 
+
+  invoice: any = {}
 
  
 
@@ -44,7 +72,7 @@ export class CreateComponent implements OnInit {
     this.place = form.value.target;
   }
 
-  selectedInvoice(val: any){
+  typeOfInvoice(val: any){
     this.invoiceType = val
   }
 
@@ -59,13 +87,22 @@ export class CreateComponent implements OnInit {
       measuringUnit: '',
       quantity: '',
       price: '',
-      ddv:'',
+    });
+  }
+ 
+  populateRows(data: any) {
+    return this._fb.group({
+      description: data.description,
+      measuringUnit: data.measuringUnit,
+      quantity: data.quantity,
+      price: data.price,
     });
   }
 
   addNewRow() {
     this.formArr.push(this.initRows());
   }
+
 
 
   getQuantity(event: any){
@@ -94,6 +131,31 @@ export class CreateComponent implements OnInit {
       this.onPrintHide = false;
     }
   }
- 
+
+  onPrint(){
+    if(this.place == '' && this.invoiceType == '' && this.totalPayment == 0){
+      return
+    }else{
+      this.invoice.counter = this.invoiceCounter;
+      this.invoice.addres = this.place;
+      this.invoice.serialNr = '#INV-'+this.serialNumber+ this.invoiceCounter;
+      this.invoice.date = this.todaysDate;
+      this.invoice.invoiceType = this.invoiceType;
+      let tempProducts: any[] = [];
+      for (let i = 0; i < this.invoiceForm.value.Rows.length; i++) {
+        const element = this.invoiceForm.value.Rows[i];
+        tempProducts.push(element);
+      }
+      this.invoice.products = tempProducts;
+      this.invoice.total = this.total;
+      this.invoice.ddv = this.ddv;
+      this.invoice.payment = this.totalPayment;
+      if(!this.selectedInvoice){
+        this.httpService.postInvoice(this.invoice).subscribe();
+        this.router.navigate(['/home'])
+      }
+    }
+    
+  }
 
 }
